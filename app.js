@@ -450,7 +450,7 @@
       state.currentBeat = beat;
     }
 
-    tempoOut.value = `${tempo} BPM`;
+    tempoOut.value = String(tempo);
     updateSeekAndStatus();
   }
 
@@ -483,26 +483,24 @@
     const width = pianoLabels.clientWidth || 66;
     labelsCanvas.width = width;
     labelsCanvas.height = height;
-    labelsCtx.fillStyle = "#f5efd9";
+    labelsCtx.fillStyle = "#f7f2e4";
     labelsCtx.fillRect(0, 0, width, height);
 
     for (let midi = MIN_MIDI; midi <= MAX_MIDI; midi += 1) {
       const y = yForMidi(midi);
       const note = midi % 12;
       const isBlack = [1, 3, 6, 8, 10].includes(note);
-      labelsCtx.fillStyle = isBlack ? "#ece2c6" : "#f9f4e6";
+      labelsCtx.fillStyle = isBlack ? "#f0e9d8" : "#f7f2e4";
       labelsCtx.fillRect(0, y, width, rowHeight);
-      labelsCtx.strokeStyle = "#e0d8bf";
+      labelsCtx.strokeStyle = "#e2d9be";
       labelsCtx.beginPath();
       labelsCtx.moveTo(0, y + rowHeight + 0.5);
       labelsCtx.lineTo(width, y + rowHeight + 0.5);
       labelsCtx.stroke();
 
-      if (note === 0 || midi === MIN_MIDI || midi === MAX_MIDI) {
-        labelsCtx.fillStyle = "#586e75";
-        labelsCtx.font = "11px Menlo, monospace";
-        labelsCtx.fillText(midiToLabel(midi), 6, y + Math.min(rowHeight - 2, 11));
-      }
+      labelsCtx.fillStyle = "#586e75";
+      labelsCtx.font = "10px Menlo, monospace";
+      labelsCtx.fillText(midiToLabel(midi), 3, y + Math.min(rowHeight - 2, 10));
     }
   }
 
@@ -528,10 +526,10 @@
       const y = yForMidi(midi);
       const note = midi % 12;
       const isBlack = [1, 3, 6, 8, 10].includes(note);
-      c.fillStyle = isBlack ? "#e6ddc2" : "#f7f1df";
+      c.fillStyle = isBlack ? "#f1ead9" : "#f7f2e4";
       c.fillRect(0, y, width, rowHeight);
 
-      c.strokeStyle = "#e0d8bf";
+      c.strokeStyle = "#e3dac0";
       c.beginPath();
       c.moveTo(0, y + 0.5);
       c.lineTo(width, y + 0.5);
@@ -589,7 +587,7 @@
 
   function updateSeekAndStatus() {
     const beat = getCurrentBeat();
-    statusText.textContent = `${formatClock(beat)} / ${formatClock(TOTAL_BEATS)} | ${formatBarBeat(beat)} | ${state.tempo} BPM`;
+    statusText.textContent = `${formatClock(beat)} / ${formatClock(TOTAL_BEATS)} | ${formatBarBeat(beat)}`;
   }
 
   function animationLoop() {
@@ -603,7 +601,7 @@
 
   function wireUi() {
     tempoRange.value = String(BASE_TEMPO);
-    tempoOut.value = `${BASE_TEMPO} BPM`;
+    tempoOut.value = String(BASE_TEMPO);
 
     playPauseBtn.addEventListener("click", async () => {
       if (state.isPlaying) {

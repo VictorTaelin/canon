@@ -16,7 +16,7 @@
   --blue: #268bd2;
   --cyan: #2aa198;
   --green: #859900;
-  --labels-w: 66px;
+  --labels-w: 48px;
 }
 
 * {
@@ -32,6 +32,7 @@ body {
   background: var(--base3);
   color: var(--base00);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.01em;
 }
 
 .app {
@@ -49,28 +50,29 @@ body {
   gap: 8px;
   padding: 2px 8px;
   border-bottom: 1px solid var(--base1);
-  background: var(--base2);
+  background: var(--base3);
   overflow: hidden;
 }
 
 .title-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: var(--blue);
+  gap: 6px;
+  color: var(--base01);
 }
 
 .title-wrap::before {
-  content: "~";
+  content: "$";
   color: var(--green);
 }
 
 h1 {
   margin: 0;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   white-space: nowrap;
+  text-transform: lowercase;
 }
 
 .transport {
@@ -82,7 +84,7 @@ h1 {
 button {
   border: 1px solid var(--base1);
   border-radius: 0;
-  background: #f6efd8;
+  background: var(--base2);
   color: var(--base01);
   padding: 2px 8px;
   font: inherit;
@@ -92,8 +94,9 @@ button {
 }
 
 button:hover {
-  border-color: var(--base00);
-  color: var(--base03);
+  border-color: var(--blue);
+  color: var(--base02);
+  background: #f7f2e3;
 }
 
 .loop-toggle {
@@ -114,7 +117,7 @@ button:hover {
 
 .tone-row label {
   font-size: 0.7rem;
-  color: var(--base01);
+  color: var(--base00);
   white-space: nowrap;
 }
 
@@ -129,7 +132,7 @@ input[type="range"] {
 output {
   min-width: 34px;
   text-align: right;
-  color: var(--base00);
+  color: var(--base01);
   font-size: 0.7rem;
 }
 
@@ -140,7 +143,7 @@ output {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.72rem;
-  color: var(--base01);
+  color: var(--base00);
   font-variant-numeric: tabular-nums;
 }
 
@@ -166,8 +169,8 @@ output {
   grid-column: 1;
   position: relative;
   overflow: hidden;
-  border-right: 1px solid var(--base1);
-  background: #f5efd9;
+  border-right: 1px solid #d8ceb2;
+  background: #f7f2e4;
 }
 
 #labelsCanvas {
@@ -180,8 +183,8 @@ output {
   grid-column: 2;
   position: relative;
   overflow: auto;
-  border-top: 1px solid var(--base1);
-  scrollbar-color: var(--base1) var(--base2);
+  border-top: 1px solid #d8ceb2;
+  scrollbar-color: #b8b099 #f0ead7;
   scrollbar-width: thin;
 }
 
@@ -202,7 +205,7 @@ output {
   width: 2px;
   transform: translateX(-50%);
   background: var(--red);
-  box-shadow: 0 0 0 1px #fdf6e380;
+  box-shadow: 0 0 0 1px #fdf6e3a0;
   pointer-events: none;
   z-index: 5;
 }
