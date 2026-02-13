@@ -605,7 +605,7 @@
 
   function updateSeekAndStatus() {
     const beat = getCurrentBeat();
-    statusText.textContent = `${formatClock(beat)} / ${formatClock(TOTAL_BEATS)} | ${formatBarBeat(beat)}`;
+    statusText.textContent = `${formatClock(beat)} / ${formatClock(TOTAL_BEATS)}`;
   }
 
   function animationLoop() {
