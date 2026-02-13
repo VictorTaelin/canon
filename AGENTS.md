@@ -5,7 +5,7 @@
 - GitHub repo: `https://github.com/VictorTaelin/canon`
 - GitHub Pages URL: `https://victortaelin.github.io/canon/`
 - Default branch: `main`
-- Current app name in UI/title: `canon_in_d`
+- Current app name in UI/title: `canon_in_ghost`
 
 ## Purpose
 This repo contains a single-page HTML5/Web Audio app that plays Johann Pachelbel's Canon in D as a 3-violin canon (entries staggered by 2 bars) with:
