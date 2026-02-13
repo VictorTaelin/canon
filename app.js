@@ -473,6 +473,23 @@
     return leadInPadding + KEYBOARD_WIDTH + beat * BEAT_WIDTH;
   }
 
+  function setupCanvas(canvas, context, cssWidth, cssHeight) {
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, Math.round(cssWidth));
+    const h = Math.max(1, Math.round(cssHeight));
+    canvas.width = Math.max(1, Math.round(w * dpr));
+    canvas.height = Math.max(1, Math.round(h * dpr));
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { w, h };
+  }
+
+  function syncLabelScroll() {
+    const offsetY = -Math.round(rollViewport.scrollTop || 0);
+    labelsCanvas.style.transform = `translate3d(0, ${offsetY}px, 0)`;
+  }
+
   function updatePlayheadPosition() {
     const labelWidth = pianoLabels.clientWidth || 0;
     const viewportCenter = (rollViewport.clientWidth || 0) * 0.5;
@@ -481,26 +498,28 @@
 
   function drawLabels(height) {
     const width = pianoLabels.clientWidth || 66;
-    labelsCanvas.width = width;
-    labelsCanvas.height = height;
+    const size = setupCanvas(labelsCanvas, labelsCtx, width, height);
+    const canvasWidth = size.w;
     labelsCtx.fillStyle = "#f7f2e4";
-    labelsCtx.fillRect(0, 0, width, height);
+    labelsCtx.fillRect(0, 0, canvasWidth, height);
+    labelsCtx.textAlign = "center";
+    labelsCtx.textBaseline = "middle";
+    labelsCtx.font = "bold 10px Menlo, monospace";
 
     for (let midi = MIN_MIDI; midi <= MAX_MIDI; midi += 1) {
       const y = yForMidi(midi);
       const note = midi % 12;
       const isBlack = [1, 3, 6, 8, 10].includes(note);
       labelsCtx.fillStyle = isBlack ? "#f0e9d8" : "#f7f2e4";
-      labelsCtx.fillRect(0, y, width, rowHeight);
+      labelsCtx.fillRect(0, y, canvasWidth, rowHeight);
       labelsCtx.strokeStyle = "#e2d9be";
       labelsCtx.beginPath();
-      labelsCtx.moveTo(0, y + rowHeight + 0.5);
-      labelsCtx.lineTo(width, y + rowHeight + 0.5);
+      labelsCtx.moveTo(0, y + 0.5);
+      labelsCtx.lineTo(canvasWidth, y + 0.5);
       labelsCtx.stroke();
 
       labelsCtx.fillStyle = "#586e75";
-      labelsCtx.font = "10px Menlo, monospace";
-      labelsCtx.fillText(midiToLabel(midi), 3, y + Math.min(rowHeight - 2, 10));
+      labelsCtx.fillText(midiToLabel(midi), canvasWidth * 0.5, y + rowHeight * 0.5);
     }
   }
 
@@ -512,8 +531,7 @@
     const width = Math.max(scoreWidth, rollViewport.clientWidth || 0);
     const height = Math.ceil(noteCount * rowHeight);
 
-    rollCanvas.width = width;
-    rollCanvas.height = height;
+    setupCanvas(rollCanvas, ctx2d, width, height);
     rollContent.style.width = `${width}px`;
     rollContent.style.height = `${height}px`;
 
@@ -569,7 +587,7 @@
 
     drawLabels(height);
     updatePlayheadPosition();
-    labelsCanvas.style.transform = `translateY(${-rollViewport.scrollTop}px)`;
+    syncLabelScroll();
   }
 
   function followPlayhead(force = false) {
@@ -616,6 +634,19 @@
       setTempo(tempoRange.value);
     });
 
+    document.addEventListener("keydown", async (event) => {
+      if (event.code !== "Space" || event.repeat) {
+        return;
+      }
+      event.preventDefault();
+      if (state.isPlaying) {
+        pause();
+      } else {
+        await play();
+      }
+      updateSeekAndStatus();
+    });
+
     window.addEventListener("resize", () => {
       drawRoll();
       updateSeekAndStatus();
@@ -623,7 +654,7 @@
     });
 
     rollViewport.addEventListener("scroll", () => {
-      labelsCanvas.style.transform = `translateY(${-rollViewport.scrollTop}px)`;
+      syncLabelScroll();
     });
   }
 
@@ -633,7 +664,7 @@
     updatePlayPauseLabel();
     updateSeekAndStatus();
     followPlayhead(true);
-    labelsCanvas.style.transform = "translateY(0px)";
+    syncLabelScroll();
     requestAnimationFrame(animationLoop);
   }
 

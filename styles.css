@@ -16,7 +16,7 @@
   --blue: #268bd2;
   --cyan: #2aa198;
   --green: #859900;
-  --labels-w: 48px;
+  --labels-w: 40px;
 }
 
 * {
@@ -170,13 +170,17 @@ output {
   position: relative;
   overflow: hidden;
   border-right: 1px solid #d8ceb2;
+  border-top: 1px solid #d8ceb2;
   background: #f7f2e4;
 }
 
 #labelsCanvas {
   display: block;
-  width: 100%;
-  transform: translateY(0);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 #rollViewport {
