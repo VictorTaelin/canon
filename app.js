@@ -504,7 +504,8 @@
     labelsCtx.fillRect(0, 0, canvasWidth, height);
     labelsCtx.textAlign = "center";
     labelsCtx.textBaseline = "middle";
-    labelsCtx.font = "bold 10px Menlo, monospace";
+    const labelFontSize = Math.max(8, Math.min(11, Math.floor(rowHeight * 0.72)));
+    labelsCtx.font = `bold ${labelFontSize}px Menlo, monospace`;
 
     for (let midi = MIN_MIDI; midi <= MAX_MIDI; midi += 1) {
       const y = yForMidi(midi);
@@ -519,14 +520,14 @@
       labelsCtx.stroke();
 
       labelsCtx.fillStyle = "#586e75";
-      labelsCtx.fillText(midiToLabel(midi), canvasWidth * 0.5, y + rowHeight * 0.5);
+      labelsCtx.fillText(midiToLabel(midi), canvasWidth * 0.5, y + rowHeight * 0.5 + 1);
     }
   }
 
   function drawRoll() {
     refreshHorizontalPadding();
     const noteCount = MAX_MIDI - MIN_MIDI + 1;
-    rowHeight = Math.max(12, (rollViewport.clientHeight || 0) / noteCount);
+    rowHeight = Math.max(12, Math.floor((rollViewport.clientHeight || 0) / noteCount));
     const scoreWidth = Math.ceil(leadInPadding + KEYBOARD_WIDTH + TOTAL_BEATS * BEAT_WIDTH + tailPadding);
     const width = Math.max(scoreWidth, rollViewport.clientWidth || 0);
     const height = Math.ceil(noteCount * rowHeight);
