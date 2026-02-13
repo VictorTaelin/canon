@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canon in D - Theremin Roll</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar" aria-label="Playback Controls">
+        <div class="title-wrap">
+          <h1>Canon in D</h1>
+        </div>
+
+        <div class="transport">
+          <button id="playPauseBtn" type="button" aria-label="Play">▶</button>
+        </div>
+
+        <div class="tone-row compact">
+          <label for="tempoRange">Tempo</label>
+          <input id="tempoRange" type="range" min="40" max="100" step="1" />
+          <output id="tempoOut" for="tempoRange"></output>
+        </div>
+
+        <div class="status" id="statusText"></div>
+      </header>
+
+      <section class="roll-wrap" aria-label="Piano Roll">
+        <div class="roll-frame">
+          <div id="pianoLabels" aria-hidden="true">
+            <canvas id="labelsCanvas"></canvas>
+          </div>
+          <div id="rollViewport">
+            <div id="rollContent">
+              <canvas id="rollCanvas"></canvas>
+            </div>
+          </div>
+          <div id="playhead" aria-hidden="true"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="score-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
